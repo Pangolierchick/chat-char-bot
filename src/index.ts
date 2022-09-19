@@ -1,16 +1,15 @@
-import { Bot, session } from 'grammy';
-import { Menu } from '@grammyjs/menu';
+import {Bot, session} from 'grammy';
+import {Menu} from '@grammyjs/menu';
 import * as dotenv from 'dotenv';
-import { addMeditation, buySubscription, giveSubscribtion} from './cmds';
-import { ChatChar } from './facade';
-import { generateUpdateMiddleware } from 'telegraf-middleware-console-time';
+import {addMeditation, buySubscription, giveSubscribtion} from './cmds';
+import {ChatChar} from './facade';
 
 
 import {
   conversations,
   createConversation,
 } from '@grammyjs/conversations';
-import { MyContext, SessionData } from './types';
+import {MyContext, SessionData} from './types';
 
 dotenv.config();
 
@@ -19,6 +18,7 @@ if (typeof process.env.TELEGRAM_TOKEN === 'undefined') {
 }
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN);
+//FIXME change wallet id
 const chatChar = new ChatChar('79993586200');
 chatChar.sendMeditations(bot.api).catch((r) => {
   console.error(r);
@@ -101,11 +101,11 @@ const subscribtionMenu = new Menu<MyContext>('subscription-menu')
 function initial(): SessionData {
   return {
     duration: 0,
-    walletId: '79993586200',
+    walletId: '79993586200', // FIXME change wallet id
   };
 }
 
-bot.use(session({ initial }));
+bot.use(session({initial}));
 bot.use(conversations());
 
 bot.use(conversations());
@@ -118,8 +118,6 @@ defMainMenu.register(subscribtionMenu);
 defMainMenu.register(helpMenu);
 bot.use(defMainMenu);
 bot.use(adminMainMenu);
-//FIXME
-bot.use(generateUpdateMiddleware());
 
 bot.on(':text', async (ctx) => {
   let menu = defMainMenu;
@@ -129,7 +127,7 @@ bot.on(':text', async (ctx) => {
   if (isAdmin) {
     menu = adminMainMenu;
   }
-  await ctx.reply('Меню', { reply_markup: menu });
+  await ctx.reply('Меню', {reply_markup: menu});
 });
 
 async function main() {
