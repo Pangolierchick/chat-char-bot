@@ -44,8 +44,8 @@
     "typescript": "^4.7.3"
   },
   "scripts": {
-    "build": "yarn tsup",
-    "start": "yarn tsup && node dist/index.js",
+    "build": "yarn tsup && echo \"$(echo '#!/user/bin/env node\n'; cat ./dist/index.js)\" > ./dist/index.js",
+    "start": "yarn tsup && echo \"$(echo '#!/user/bin/env node\n'; cat ./dist/index.js)\" > ./dist/index.js && node dist/index.js",
     "lint": "eslint .",
     "fix": "eslint --fix --ext .ts .",
     "ts": "tsc --project tsconfig.json"
