@@ -1,0 +1,69 @@
+{
+  "name": "chat-char-bot",
+  "version": "0.0.1",
+  "repository": "git@github.com:Pangolierchick/chat-char-bot.git",
+  "author": "rkv <dontgofun@gmail.com>",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "source": "./src/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "dts": true,
+    "sourcemap": true,
+    "clean": true
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/node-cron": "^3.0.4",
+    "@types/node-fetch": "^2.6.2",
+    "@types/sqlite3": "^3.1.8",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.37.0",
+    "eslint": "^8.17.0",
+    "esno": "^0.16.3",
+    "telegraf-middleware-console-time": "^2.1.0",
+    "tsup": "^6.1.2",
+    "typescript": "^4.7.3"
+  },
+  "scripts": {
+    "build": "yarn tsup",
+    "start": "yarn tsup && node dist/index.js",
+    "lint": "eslint .",
+    "fix": "eslint --fix --ext .ts .",
+    "ts": "tsc --project tsconfig.json"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "@grammyjs/conversations": "^1.0.2",
+    "@grammyjs/menu": "^1.1.2",
+    "@typescript-eslint/parser": "^5.37.0",
+    "dotenv": "^16.0.2",
+    "grammy": "^1.11.0",
+    "grammy-inline-menu": "^8.0.0",
+    "node-cron": "^3.0.2",
+    "node-fetch": "^3.2.10",
+    "set-interval-async": "^3.0.2",
+    "sqlite3": "^5.0.11",
+    "uuid": "^9.0.0"
+  }
+}
