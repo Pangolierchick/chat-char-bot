@@ -1,8 +1,6 @@
 import {ConversationFlavor, Conversation} from '@grammyjs/conversations';
 import {Context, SessionFlavor} from 'grammy';
 
-//FIXME subscription price
-export const MONTH_SUBSCRIPTION_PRICE = 1;
 export const QIWI_INTERVAL_MS = 3000;
 
 export interface ICharDB {
@@ -22,12 +20,11 @@ export interface ICharDB {
   getTransaction(id: number): Promise<RawTransaction | null>;
 }
 
-//FIXME
 export enum SubscriptionPrice {
   none = 0,
-  month = MONTH_SUBSCRIPTION_PRICE,
-  threeMonth = month * 3,
-  year = month * 12,
+  month = 1390,
+  threeMonth = 2970,
+  year = 5340,
 }
 
 export enum Duration {

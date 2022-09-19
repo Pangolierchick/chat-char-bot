@@ -13,13 +13,18 @@ import {MyContext, SessionData} from './types';
 
 dotenv.config();
 
+if (typeof process.env.WALLET_ID === 'undefined') {
+  throw new Error('Add wallet id in .env file');
+}
+
 if (typeof process.env.TELEGRAM_TOKEN === 'undefined') {
   throw new Error('Add telegram token in .env file');
 }
 
+const WALLET_ID = process.env.WALLET_ID;
+
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN);
-//FIXME change wallet id
-const chatChar = new ChatChar('79993586200');
+const chatChar = new ChatChar(WALLET_ID);
 chatChar.sendMeditations(bot.api).catch((r) => {
   console.error(r);
 });
@@ -101,7 +106,7 @@ const subscribtionMenu = new Menu<MyContext>('subscription-menu')
 function initial(): SessionData {
   return {
     duration: 0,
-    walletId: '79993586200', // FIXME change wallet id
+    walletId: WALLET_ID,
   };
 }
 
