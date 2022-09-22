@@ -85,14 +85,17 @@ export class ChatChar {
         const user = await this.db.getUserById(subscriber.id);
         const chatId = user!.chatId.toString();
         if (new Date(subscriber.end) > new Date()) {
-          const needMeditation = meditations[subscriber.currentMeditationId];
-          api.sendMessage(chatId, needMeditation.caption).then(() => {
-            return api.sendVoice(chatId, needMeditation.voiceId);
-          }).then(() => {
-            return api.sendPhoto(chatId, needMeditation.pictureId);
-          });
+          if (subscriber.currentMeditationId < meditations.length) {
+            const needMeditation = meditations[subscriber.currentMeditationId];
+            api.sendMessage(chatId, needMeditation.caption).then(() => {
+              return api.sendVoice(chatId, needMeditation.voiceId);
+            }).then(() => {
+              return api.sendPhoto(chatId, needMeditation.pictureId);
+            });
 
-          await this.db.incrementMeditationId(user!.chatId);
+            await this.db.incrementMeditationId(user!.chatId);
+            await api.sendMessage(chatId, 'К сожалению, новых медитаций на сегодня нет.');
+          }
         } else {
           await api.sendMessage(chatId, 'Ваша подписка закончилась. Чтобы получать следующие медитации, продлите подписку.');
         }
