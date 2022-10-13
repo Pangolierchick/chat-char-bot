@@ -97,7 +97,9 @@ export class ChatChar {
             await api.sendMessage(chatId, 'К сожалению, новых медитаций на сегодня нет.');
           }
         } else {
+          /*
           await api.sendMessage(chatId, 'Ваша подписка закончилась. Чтобы получать следующие медитации, продлите подписку.');
+          */
         }
       }
     });

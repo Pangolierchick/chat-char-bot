@@ -21,7 +21,12 @@ if (typeof process.env.TELEGRAM_TOKEN === 'undefined') {
   throw new Error('Add telegram token in .env file');
 }
 
+if (typeof process.env.CHAT_URL === 'undefined') {
+  throw new Error('Add chat url in .env file');
+}
+
 const WALLET_ID = process.env.WALLET_ID;
+const CHAT_URL = process.env.CHAT_URL;
 
 const bot = new Bot<MyContext>(process.env.TELEGRAM_TOKEN);
 const chatChar = new ChatChar(WALLET_ID);
@@ -49,16 +54,18 @@ const defMainMenu = new Menu<MyContext>('default-user-menu')
       await ctx.reply(`Подписка действительна до ${new Date(subscription.end).toLocaleDateString('ru')}`);
     }
   }).row()
+  .url('Чат', CHAT_URL).row()
   .submenu('Помощь', 'help-menu');
 
 const adminMainMenu = new Menu<MyContext>('admin-menu')
   .text('Добавить медитацию', async (ctx) => await ctx.conversation.enter('addMeditation')).row()
-  .submenu('Дать подписку пользователю', 'give-sub-submenu');
+  .submenu('Дать подписку пользователю', 'give-sub-submenu').row()
+  .submenu('Обычное меню', 'default-user-menu');
 
 const giveUserSubMenu = new Menu<MyContext>('give-sub-submenu')
   .text('Месяц', async (ctx) => { ctx.session.duration = 1; await ctx.conversation.enter('giveSubscribtion');})
   .text('3 месяца', async (ctx) => { ctx.session.duration = 3; await ctx.conversation.enter('giveSubscribtion');})
-  .text('Год', async (ctx) => { ctx.session.duration = 12; await ctx.conversation.enter('giveSubscribtion');}).row()
+  .text('6 месяцев', async (ctx) => { ctx.session.duration = 6; await ctx.conversation.enter('giveSubscribtion');}).row()
   .back('Назад');
 
 const helpMenu = new Menu<MyContext>('help-menu')
@@ -93,11 +100,11 @@ const subscribtionMenu = new Menu<MyContext>('subscription-menu')
     ctx.session.duration = 3;
     await ctx.conversation.enter('buySubscription');
   }).row()
-  .text('Год', async (ctx) => {
+  .text('6 месяцев', async (ctx) => {
     if (await checkSubscription(ctx)) {
       return;
     }
-    ctx.session.duration = 12;
+    ctx.session.duration = 6;
     await ctx.conversation.enter('buySubscription');
   }).row()
   .back('Назад');
@@ -122,6 +129,8 @@ adminMainMenu.register(giveUserSubMenu);
 defMainMenu.register(subscribtionMenu);
 defMainMenu.register(helpMenu);
 bot.use(defMainMenu);
+
+adminMainMenu.register(defMainMenu);
 bot.use(adminMainMenu);
 
 bot.on(':text', async (ctx) => {

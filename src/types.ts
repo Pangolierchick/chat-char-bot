@@ -24,19 +24,19 @@ export enum SubscriptionPrice {
   none = 0,
   month = 1390,
   threeMonth = 2970,
-  year = 5340,
+  sixMonth = 5340,
 }
 
 export enum Duration {
   none = 0,
   month,
   threeMonth = 3,
-  year = 12,
+  sixMonth = 6,
 }
 
 export const MONTH = 1;
 export const THREE_MONTH = MONTH * 3;
-export const YEAR = MONTH * 12;
+export const SIX_MONTH = MONTH * 6;
 
 export type RawSubscriber = {
   id: string;
